@@ -1,22 +1,20 @@
-using Dalamud.IoC;
 using Dalamud.Plugin;
 
-namespace Casexile
+namespace Casexile;
+
+public sealed class Plugin : IDalamudPlugin
 {
-    public sealed class Plugin : IDalamudPlugin
+    public string Name => "Casexile";
+
+    private SlashCommandInterceptor _slashCommandInterceptor { get; init; }
+
+    public Plugin(DalamudPluginInterface pluginInterface)
     {
-        public string Name => "Casexile";
+        _slashCommandInterceptor = pluginInterface.Create<SlashCommandInterceptor>(pluginInterface)!;
+    }
 
-        private SlashCommandInterceptor? _slashCommandInterceptor { get; init; }
-
-        public Plugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface)
-        {
-            _slashCommandInterceptor = pluginInterface.Create<SlashCommandInterceptor>();
-        }
-
-        public void Dispose()
-        {
-            _slashCommandInterceptor?.Dispose();
-        }
+    public void Dispose()
+    {
+        _slashCommandInterceptor?.Dispose();
     }
 }
